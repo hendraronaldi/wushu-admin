@@ -32,17 +32,21 @@ func SetupRouter(router *gin.Engine) {
 
 func Router(router *gin.Engine) {
 	UsersRouter(router)
+	AdminRouter(router)
 }
 
 func UsersRouter(router *gin.Engine) {
 	router.POST("/register", controller.Register)
 	router.POST("/login", controller.Login)
-	router.POST("/validate", controller.ValidateUser)
-	router.POST("/reject", controller.RejectUser)
 	// router.POST("/welcome", controller.Welcome)
 	// router.POST("/logout", controller.Logout)
 	// router.POST("/userprofile", controller.GetUser)
 	// router.POST("/users", controller.PostUser)
 	// router.PUT("/users", controller.UpdateUser)
 	// router.DELETE("/users", controller.DeleteUser)
+}
+
+func AdminRouter(router *gin.Engine) {
+	router.POST("/validate", controller.ValidateUser)
+	router.POST("/reject", controller.RejectUser)
 }
