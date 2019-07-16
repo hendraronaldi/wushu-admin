@@ -41,6 +41,7 @@ func UsersRouter(router *gin.Engine) {
 	router.PUT("/edituser", controller.EditUser)
 	router.POST("/register", controller.Register)
 	router.POST("/login", controller.Login)
+	router.DELETE("/deleteuser", controller.DeleteUser)
 	// router.POST("/welcome", controller.Welcome)
 	// router.POST("/logout", controller.Logout)
 	// router.POST("/userprofile", controller.GetUser)

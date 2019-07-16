@@ -64,6 +64,39 @@ func EditUser(c *gin.Context) {
 	}
 }
 
+func DeleteUser(c *gin.Context) {
+	var user model.User
+	var err error
+
+	if json.NewDecoder(c.Request.Body).Decode(&user); err != nil {
+		c.JSON(400, gin.H{
+			"response": "invalid deletion request",
+		})
+	} else {
+		if _, err = FindUser(user.Username); err != nil {
+			c.JSON(400, gin.H{
+				"response": "user not exist",
+			})
+		} else {
+			conn := connections.FirebaseConnection()
+			_, err := conn.Collection("users").Doc(user.Username).Delete(context.Background())
+			if err != nil {
+				// Handle any errors in an appropriate way, such as returning them.
+				log.Printf("An error has occurred: %s", err)
+			}
+			if err != nil {
+				c.JSON(400, gin.H{
+					"response": "user deletion error",
+				})
+			} else {
+				c.JSON(200, gin.H{
+					"response": "user is deleted",
+				})
+			}
+		}
+	}
+}
+
 func ValidateUser(c *gin.Context) {
 	var user model.User
 	var err error
