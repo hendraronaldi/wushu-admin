@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"work/wushu-backend/modules/controller"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
@@ -49,4 +51,18 @@ func UsersRouter(router *gin.Engine) {
 func AdminRouter(router *gin.Engine) {
 	router.POST("/validate", controller.ValidateUser)
 	router.POST("/reject", controller.RejectUser)
+}
+
+func AuthRequired() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		session := sessions.Default(c)
+		user := session.Get("user")
+		if user == nil {
+			// You'd normally redirect to login page
+			c.JSON(http.StatusBadRequest, gin.H{"response": "Invalid session token"})
+		} else {
+			// Continue down the chain to handler etc
+			c.Next()
+		}
+	}
 }
