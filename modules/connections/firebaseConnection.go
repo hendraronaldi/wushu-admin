@@ -22,6 +22,17 @@ func FirebaseSA() {
 		log.Fatalln(err)
 	}
 
+	_, _, err = client.Collection("sample").Add(ctx, map[string]interface{}{
+		"first":  "Alan",
+		"middle": "Mathison",
+		"last":   "Turing",
+		"born":   1912,
+	})
+
+	if err != nil {
+		log.Fatalf("Failed adding aturing: %v", err)
+	}
+
 	defer client.Close()
 }
 
