@@ -38,7 +38,7 @@ func Router(router *gin.Engine) {
 }
 
 func UsersRouter(router *gin.Engine) {
-	router.POST("/edituser", controller.EditUser)
+	router.PUT("/edituser", controller.EditUser)
 	router.POST("/register", controller.Register)
 	router.POST("/login", controller.Login)
 	// router.POST("/welcome", controller.Welcome)
