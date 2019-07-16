@@ -16,3 +16,8 @@ type User struct {
 	ExpPrev         string `json:"expprev"`
 	Motivation      string `json:"motivation"`
 }
+
+type Login struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}

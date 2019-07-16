@@ -3,6 +3,7 @@ package controller
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"work/wushu-backend/modules/connections"
 	"work/wushu-backend/modules/model"
@@ -61,8 +62,8 @@ func Register(c *gin.Context) {
 }
 
 func Login(c *gin.Context) {
-	var request model.User
-	// var user map[string]interface{}
+	var request model.Login
+	var user map[string]interface{}
 	var err error
 
 	if json.NewDecoder(c.Request.Body).Decode(&request); err != nil {
@@ -70,12 +71,18 @@ func Login(c *gin.Context) {
 			"response": "invalid login request",
 		})
 	} else {
-		if _, err = FindUser(request.Username); err != nil {
+		if user, err = FindUser(request.Username); err != nil {
 			c.JSON(400, gin.H{
 				"response": "user not exist",
 			})
 		} else {
-			// TODO: send user profile
+			if request.Username == fmt.Sprint(user["Username"]) && request.Password == fmt.Sprint(user["Password"]) {
+				c.JSON(200, user)
+			} else {
+				c.JSON(400, gin.H{
+					"response": "wrong username or password",
+				})
+			}
 		}
 	}
 }
