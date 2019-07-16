@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"work/wushu-backend/modules/controller"
 
 	"github.com/gin-gonic/gin"
 )
@@ -34,6 +35,7 @@ func Router(router *gin.Engine) {
 }
 
 func UsersRouter(router *gin.Engine) {
+	router.POST("/register", controller.Register)
 	// router.GET("/users", controller.GetAllUser)
 	// router.POST("/login", controller.Login)
 	// router.POST("/welcome", controller.Welcome)

@@ -4,11 +4,12 @@ import (
 	"context"
 	"log"
 
+	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
 	"google.golang.org/api/option"
 )
 
-func FirebaseSA() {
+func FirebaseConnection() *firestore.Client {
 	// Use a service account
 	ctx := context.Background()
 	sa := option.WithCredentialsFile("utilities/admin-wushu-firebase.json")
@@ -22,18 +23,7 @@ func FirebaseSA() {
 		log.Fatalln(err)
 	}
 
-	_, _, err = client.Collection("sample").Add(ctx, map[string]interface{}{
-		"first":  "Alan",
-		"middle": "Mathison",
-		"last":   "Turing",
-		"born":   1912,
-	})
-
-	if err != nil {
-		log.Fatalf("Failed adding aturing: %v", err)
-	}
-
-	defer client.Close()
+	return client
 }
 
 // func FirebaseConnection() *firego.Firebase {
