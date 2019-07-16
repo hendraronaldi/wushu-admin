@@ -36,8 +36,9 @@ func Router(router *gin.Engine) {
 
 func UsersRouter(router *gin.Engine) {
 	router.POST("/register", controller.Register)
-	// router.GET("/users", controller.GetAllUser)
 	router.POST("/login", controller.Login)
+	router.POST("/validate", controller.ValidateUser)
+	router.POST("/reject", controller.RejectUser)
 	// router.POST("/welcome", controller.Welcome)
 	// router.POST("/logout", controller.Logout)
 	// router.POST("/userprofile", controller.GetUser)
