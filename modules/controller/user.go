@@ -35,6 +35,35 @@ func AddUser(user model.User) error {
 	return nil
 }
 
+func EditUser(c *gin.Context) {
+	var user model.User
+	var err error
+
+	if json.NewDecoder(c.Request.Body).Decode(&user); err != nil {
+		c.JSON(400, gin.H{
+			"response": "invalid edit request",
+		})
+	} else {
+		if _, err = FindUser(user.Username); err != nil {
+			c.JSON(400, gin.H{
+				"response": "user not exist",
+			})
+		} else {
+			conn := connections.FirebaseConnection()
+			_, err := conn.Collection("users").Doc(user.Username).Set(context.Background(), user)
+			if err != nil {
+				c.JSON(400, gin.H{
+					"response": "edit user error",
+				})
+			} else {
+				c.JSON(200, gin.H{
+					"response": "user is edited",
+				})
+			}
+		}
+	}
+}
+
 func ValidateUser(c *gin.Context) {
 	var user model.User
 	var err error
