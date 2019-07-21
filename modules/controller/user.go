@@ -8,7 +8,6 @@ import (
 	"work/wushu-backend/modules/connections"
 	"work/wushu-backend/modules/model"
 
-	"cloud.google.com/go/firestore"
 	"github.com/gin-gonic/gin"
 )
 
@@ -91,68 +90,6 @@ func DeleteUser(c *gin.Context) {
 			} else {
 				c.JSON(200, gin.H{
 					"response": "user is deleted",
-				})
-			}
-		}
-	}
-}
-
-func ValidateUser(c *gin.Context) {
-	var user model.User
-	var err error
-
-	if json.NewDecoder(c.Request.Body).Decode(&user); err != nil {
-		c.JSON(400, gin.H{
-			"response": "invalid validation request",
-		})
-	} else {
-		if _, err = FindUser(user.Username); err != nil {
-			c.JSON(400, gin.H{
-				"response": "user not exist",
-			})
-		} else {
-			conn := connections.FirebaseConnection()
-			_, err = conn.Collection("users").Doc(user.Username).Set(context.Background(), map[string]interface{}{
-				"status": 1,
-			}, firestore.MergeAll)
-			if err != nil {
-				c.JSON(400, gin.H{
-					"response": "user validation error",
-				})
-			} else {
-				c.JSON(200, gin.H{
-					"response": "user is validated",
-				})
-			}
-		}
-	}
-}
-
-func RejectUser(c *gin.Context) {
-	var user model.User
-	var err error
-
-	if json.NewDecoder(c.Request.Body).Decode(&user); err != nil {
-		c.JSON(400, gin.H{
-			"response": "invalid rejection request",
-		})
-	} else {
-		if _, err = FindUser(user.Username); err != nil {
-			c.JSON(400, gin.H{
-				"response": "user not exist",
-			})
-		} else {
-			conn := connections.FirebaseConnection()
-			_, err = conn.Collection("users").Doc(user.Username).Set(context.Background(), map[string]interface{}{
-				"status": 2,
-			}, firestore.MergeAll)
-			if err != nil {
-				c.JSON(400, gin.H{
-					"response": "user rejection error",
-				})
-			} else {
-				c.JSON(200, gin.H{
-					"response": "user is rejected",
 				})
 			}
 		}

@@ -47,6 +47,7 @@ func UsersRouter(router *gin.Engine) {
 func AdminRouter(router *gin.Engine) {
 	router.POST("/validate", controller.ValidateUser)
 	router.POST("/reject", controller.RejectUser)
+	router.POST("/admin-login", controller.AdminLogin)
 }
 
 func AuthRequired() gin.HandlerFunc {
