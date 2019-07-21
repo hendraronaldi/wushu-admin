@@ -14,6 +14,7 @@ type User struct {
 	PhoneParent   string `json:"phoneparent"`
 	ExpPrev       string `json:"expprev"`
 	Motivation    string `json:"motivation"`
+	Education     string `json:"education"`
 	Status        int    `json:"status"`
 }
 
