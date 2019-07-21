@@ -62,9 +62,8 @@ func ValidateUser(c *gin.Context) {
 					"response": "user validation error",
 				})
 			} else {
-				c.JSON(200, gin.H{
-					"response": "user is validated",
-				})
+				user.Status = 1
+				c.JSON(200, user)
 			}
 		}
 	}
@@ -93,9 +92,8 @@ func RejectUser(c *gin.Context) {
 					"response": "user rejection error",
 				})
 			} else {
-				c.JSON(200, gin.H{
-					"response": "user is rejected",
-				})
+				user.Status = 2
+				c.JSON(200, user)
 			}
 		}
 	}

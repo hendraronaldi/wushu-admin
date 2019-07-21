@@ -55,9 +55,7 @@ func EditUser(c *gin.Context) {
 					"response": "edit user error",
 				})
 			} else {
-				c.JSON(200, gin.H{
-					"response": "user is edited",
-				})
+				c.JSON(200, user)
 			}
 		}
 	}
