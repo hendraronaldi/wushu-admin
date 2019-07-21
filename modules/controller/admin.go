@@ -55,7 +55,7 @@ func ValidateUser(c *gin.Context) {
 		} else {
 			conn := connections.FirebaseConnection()
 			_, err = conn.Collection("users").Doc(user.Username).Set(context.Background(), map[string]interface{}{
-				"status": 1,
+				"Status": 1,
 			}, firestore.MergeAll)
 			if err != nil {
 				c.JSON(400, gin.H{
@@ -85,7 +85,7 @@ func RejectUser(c *gin.Context) {
 		} else {
 			conn := connections.FirebaseConnection()
 			_, err = conn.Collection("users").Doc(user.Username).Set(context.Background(), map[string]interface{}{
-				"status": 2,
+				"Status": 2,
 			}, firestore.MergeAll)
 			if err != nil {
 				c.JSON(400, gin.H{
