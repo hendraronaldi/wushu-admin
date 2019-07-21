@@ -35,9 +35,7 @@ func GetAllUser(c *gin.Context) {
 			"response": "get users error",
 		})
 	} else {
-		c.JSON(200, gin.H{
-			"response": "user is edited",
-		})
+		c.JSON(200, users)
 	}
 }
 
