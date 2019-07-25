@@ -35,6 +35,7 @@ func SetupRouter(router *gin.Engine) {
 func Router(router *gin.Engine) {
 	UsersRouter(router)
 	AdminRouter(router)
+	TutorialRouter(router)
 }
 
 func UsersRouter(router *gin.Engine) {
@@ -49,6 +50,11 @@ func AdminRouter(router *gin.Engine) {
 	router.POST("/reject", controller.RejectUser)
 	router.POST("/admin-login", controller.AdminLogin)
 	router.GET("/users", controller.GetAllUser)
+}
+
+func TutorialRouter(router *gin.Engine) {
+	router.GET("/courses/:id", controller.GetCourse)
+	router.POST("/courses", controller.PostCourse)
 }
 
 func AuthRequired() gin.HandlerFunc {
