@@ -53,7 +53,9 @@ func AdminRouter(router *gin.Engine) {
 }
 
 func TutorialRouter(router *gin.Engine) {
-	router.GET("/courses/:id", controller.GetCourse)
+	router.GET("/courses/:class/:category/:id", controller.GetCourseDetails)
+	router.GET("/courses/:class/:category", controller.GetCourseCategory)
+	router.GET("/courses", controller.GetCourseClass)
 	router.POST("/courses", controller.PostCourse)
 }
 
