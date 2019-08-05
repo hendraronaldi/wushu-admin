@@ -2,7 +2,6 @@ package model
 
 type User struct {
 	Name          string `json:"name"`
-	Username      string `json:"username"`
 	Email         string `json:"email"`
 	Password      string `json:"password"`
 	Birthdate     string `json:"birthdate"`
@@ -19,6 +18,6 @@ type User struct {
 }
 
 type Login struct {
-	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }

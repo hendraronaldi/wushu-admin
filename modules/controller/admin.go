@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 	"work/wushu-backend/modules/connections"
 	"work/wushu-backend/modules/model"
 
@@ -48,13 +49,14 @@ func ValidateUser(c *gin.Context) {
 			"response": "invalid validation request",
 		})
 	} else {
-		if _, err = FindUser(user.Username); err != nil {
+		user.Email = strings.ToLower(user.Email)
+		if _, err = FindUser(user.Email); err != nil {
 			c.JSON(400, gin.H{
 				"response": "user not exist",
 			})
 		} else {
 			conn := connections.FirebaseConnection()
-			_, err = conn.Collection("users").Doc(user.Username).Set(context.Background(), map[string]interface{}{
+			_, err = conn.Collection("users").Doc(user.Email).Set(context.Background(), map[string]interface{}{
 				"Status": 1,
 			}, firestore.MergeAll)
 			if err != nil {
@@ -78,13 +80,14 @@ func RejectUser(c *gin.Context) {
 			"response": "invalid rejection request",
 		})
 	} else {
-		if _, err = FindUser(user.Username); err != nil {
+		user.Email = strings.ToLower(user.Email)
+		if _, err = FindUser(user.Email); err != nil {
 			c.JSON(400, gin.H{
 				"response": "user not exist",
 			})
 		} else {
 			conn := connections.FirebaseConnection()
-			_, err = conn.Collection("users").Doc(user.Username).Set(context.Background(), map[string]interface{}{
+			_, err = conn.Collection("users").Doc(user.Email).Set(context.Background(), map[string]interface{}{
 				"Status": 2,
 			}, firestore.MergeAll)
 			if err != nil {
@@ -99,9 +102,9 @@ func RejectUser(c *gin.Context) {
 	}
 }
 
-func FindAdmin(username string) (map[string]interface{}, error) {
+func FindAdmin(email string) (map[string]interface{}, error) {
 	conn := connections.FirebaseConnection()
-	dsnap, err := conn.Collection("admin").Doc(username).Get(context.Background())
+	dsnap, err := conn.Collection("admin").Doc(email).Get(context.Background())
 	if err != nil {
 		return nil, err
 	}
@@ -120,16 +123,17 @@ func AdminLogin(c *gin.Context) {
 			"response": "invalid login request",
 		})
 	} else {
-		if user, err = FindAdmin(request.Username); err != nil {
+		request.Email = strings.ToLower(request.Email)
+		if user, err = FindAdmin(request.Email); err != nil {
 			c.JSON(400, gin.H{
 				"response": "admin not exist",
 			})
 		} else {
-			if request.Username == fmt.Sprint(user["Username"]) && request.Password == fmt.Sprint(user["Password"]) {
+			if request.Email == fmt.Sprint(user["Email"]) && request.Password == fmt.Sprint(user["Password"]) {
 				c.JSON(200, user)
 			} else {
 				c.JSON(400, gin.H{
-					"response": "wrong username or password",
+					"response": "wrong email or password",
 				})
 			}
 		}
