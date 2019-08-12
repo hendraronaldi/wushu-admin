@@ -133,13 +133,14 @@ func GetUserPerformance(c *gin.Context) {
 	email := c.Param("email")
 
 	conn := connections.PostgresConnection()
+
 	query := `SELECT * FROM performance, flexibility, power
 	WHERE performance.flexibility_id = flexibility.flexibility_id
+	AND performance.email LIKE '` + email + `'
 	AND performance.power_id = power.power_id
 	AND performance.performance_id > 0
 	AND performance.flexibility_id > 0
-	AND performance.power_id > 0
-	AND performance.email == ` + email
+	AND performance.power_id > 0`
 
 	rows, err := conn.Query(query)
 	if err != nil {
@@ -165,7 +166,7 @@ func GetUserPerformance(c *gin.Context) {
 	}
 	// get any error encountered during iteration
 	err = rows.Err()
-	if err != nil {
+	if err != nil || performances == nil {
 		c.JSON(400, gin.H{
 			"response": "iteration error",
 		})
