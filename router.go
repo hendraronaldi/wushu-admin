@@ -62,6 +62,8 @@ func TutorialRouter(router *gin.Engine) {
 
 func PerformanceRouter(router *gin.Engine) {
 	router.POST("/performance", controller.PostPerformance)
+	router.GET("/performance", controller.GetPerformance)
+	router.GET("/performance/:email", controller.GetUserPerformance)
 }
 
 func AuthRequired() gin.HandlerFunc {

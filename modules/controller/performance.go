@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
 	"work/wushu-backend/modules/connections"
 	"work/wushu-backend/modules/model"
@@ -61,14 +60,11 @@ func PostPerformance(c *gin.Context) {
 					}
 				}
 
-				fmt.Println(columns)
-				fmt.Println(values)
-
 				performanceID := connections.InsertPostgresData(conn, "performance", columns, values)
 
 				if performanceID == 0 {
 					c.JSON(400, gin.H{
-						"response": "user not exist",
+						"response": "fail to insert data",
 					})
 				} else {
 					c.JSON(200, gin.H{
@@ -81,5 +77,99 @@ func PostPerformance(c *gin.Context) {
 				})
 			}
 		}
+	}
+}
+
+func GetPerformance(c *gin.Context) {
+	var performance model.Performance
+	var performances []interface{}
+	var unusedID string
+
+	conn := connections.PostgresConnection()
+	query := `SELECT * FROM performance, flexibility, power
+	WHERE performance.flexibility_id = flexibility.flexibility_id
+	AND performance.power_id = power.power_id
+	AND performance.performance_id > 0
+	AND performance.flexibility_id > 0
+	AND performance.power_id > 0`
+
+	rows, err := conn.Query(query)
+	if err != nil {
+		// handle this error better than this
+		c.JSON(400, gin.H{
+			"response": "query error",
+		})
+	}
+	defer rows.Close()
+	for rows.Next() {
+		err = rows.Scan(&performance.Date, &performance.Flexibility_id, &performance.Email, &unusedID, &performance.Power_id,
+			&unusedID, &performance.Flexibility.Shoulder, &performance.Flexibility.Wrist,
+			&performance.Flexibility.Waist, &performance.Flexibility.Leg,
+			&unusedID, &performance.Power.Jump, &performance.Power.Kick,
+			&performance.Power.Strike, &performance.Power.HandSwing, &performance.Power.Spin, &performance.Power.LegSwing)
+		if err != nil {
+			// handle this error
+			c.JSON(400, gin.H{
+				"response": "bind data error",
+			})
+		}
+		performances = append(performances, performance)
+	}
+	// get any error encountered during iteration
+	err = rows.Err()
+	if err != nil {
+		c.JSON(400, gin.H{
+			"response": "iteration error",
+		})
+	} else {
+		c.JSON(200, performances)
+	}
+}
+
+func GetUserPerformance(c *gin.Context) {
+	var performance model.Performance
+	var performances []interface{}
+	var unusedID string
+	email := c.Param("email")
+
+	conn := connections.PostgresConnection()
+	query := `SELECT * FROM performance, flexibility, power
+	WHERE performance.flexibility_id = flexibility.flexibility_id
+	AND performance.power_id = power.power_id
+	AND performance.performance_id > 0
+	AND performance.flexibility_id > 0
+	AND performance.power_id > 0
+	AND performance.email == ` + email
+
+	rows, err := conn.Query(query)
+	if err != nil {
+		// handle this error better than this
+		c.JSON(400, gin.H{
+			"response": "query error",
+		})
+	}
+	defer rows.Close()
+	for rows.Next() {
+		err = rows.Scan(&performance.Date, &performance.Flexibility_id, &performance.Email, &unusedID, &performance.Power_id,
+			&unusedID, &performance.Flexibility.Shoulder, &performance.Flexibility.Wrist,
+			&performance.Flexibility.Waist, &performance.Flexibility.Leg,
+			&unusedID, &performance.Power.Jump, &performance.Power.Kick,
+			&performance.Power.Strike, &performance.Power.HandSwing, &performance.Power.Spin, &performance.Power.LegSwing)
+		if err != nil {
+			// handle this error
+			c.JSON(400, gin.H{
+				"response": "bind data error",
+			})
+		}
+		performances = append(performances, performance)
+	}
+	// get any error encountered during iteration
+	err = rows.Err()
+	if err != nil {
+		c.JSON(400, gin.H{
+			"response": "iteration error",
+		})
+	} else {
+		c.JSON(200, performances)
 	}
 }
