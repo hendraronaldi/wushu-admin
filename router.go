@@ -36,6 +36,7 @@ func Router(router *gin.Engine) {
 	UsersRouter(router)
 	AdminRouter(router)
 	TutorialRouter(router)
+	PerformanceRouter(router)
 }
 
 func UsersRouter(router *gin.Engine) {
@@ -57,6 +58,10 @@ func TutorialRouter(router *gin.Engine) {
 	router.GET("/courses/:class/:category", controller.GetCourseCategory)
 	router.GET("/courses", controller.GetCourseClass)
 	router.POST("/courses", controller.PostCourse)
+}
+
+func PerformanceRouter(router *gin.Engine) {
+	router.POST("/performance", controller.PostPerformance)
 }
 
 func AuthRequired() gin.HandlerFunc {
