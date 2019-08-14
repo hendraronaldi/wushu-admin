@@ -35,6 +35,8 @@ func PostgresConnection() *sql.DB {
 			m["host"], int(m["port"].(float64)), m["user"], m["password"], m["dbname"])
 	}
 
+	fmt.Println(psqlInfo)
+
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		panic(err)
