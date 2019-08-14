@@ -111,6 +111,12 @@
 			"revisionTime": "2019-06-11T16:49:09Z"
 		},
 		{
+			"checksumSHA1": "Ps2Bsd1OjhSmAv4uVA2ZIZx7w7k=",
+			"path": "github.com/fatih/structs",
+			"revision": "878a968ab22548362a09bdb3322f98b00f470d46",
+			"revisionTime": "2018-10-10T23:17:57Z"
+		},
+		{
 			"checksumSHA1": "zPsYN/5ad47ZJsXJ10dCQ8wUQy0=",
 			"path": "github.com/gin-contrib/sessions",
 			"revision": "dc5246754963078ec815f6697f7075c0c0c7d86d",
@@ -235,6 +241,24 @@
 			"path": "github.com/hashicorp/golang-lru/simplelru",
 			"revision": "59383c442f7d7b190497e9bb8fc17a48d06cd03f",
 			"revisionTime": "2019-05-20T14:04:33Z"
+		},
+		{
+			"checksumSHA1": "OBxx2YLHHcK3qJNADNLQs0tY8vc=",
+			"path": "github.com/lib/pq",
+			"revision": "3427c32cb71afc948325f299f040e53c1dd78979",
+			"revisionTime": "2019-07-16T17:26:55Z"
+		},
+		{
+			"checksumSHA1": "ATnwV0POluBNQEMjPdylodz0oK0=",
+			"path": "github.com/lib/pq/oid",
+			"revision": "3427c32cb71afc948325f299f040e53c1dd78979",
+			"revisionTime": "2019-07-16T17:26:55Z"
+		},
+		{
+			"checksumSHA1": "3OonTK1mBkRfbFsQPuSLcACph7I=",
+			"path": "github.com/lib/pq/scram",
+			"revision": "3427c32cb71afc948325f299f040e53c1dd78979",
+			"revisionTime": "2019-07-16T17:26:55Z"
 		},
 		{
 			"checksumSHA1": "GiVgQkx5acnq+JZtYiuHPlhHoso=",
