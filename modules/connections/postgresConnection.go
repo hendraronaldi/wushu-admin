@@ -2,23 +2,38 @@ package connections
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"os"
 
 	_ "github.com/lib/pq"
 )
 
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "sonic_blade"
-	dbname   = "wushutp"
-)
-
 func PostgresConnection() *sql.DB {
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
+	var psqlInfo string
+
+	if os.Getenv("DATABASE_URL") != "" {
+		psqlInfo = fmt.Sprintf("host=%s port=%d user=%s "+
+			"password=%s dbname=%s sslmode=disable",
+			os.Getenv("host"), os.Getenv("port"), os.Getenv("user"), os.Getenv("password"), os.Getenv("dbname"))
+	} else {
+		configJSON, err := ioutil.ReadFile("utilities/postgres-const.json")
+		if err != nil {
+			fmt.Println("read file postgres const err", err)
+			return nil
+		}
+		var m map[string]interface{}
+		err = json.Unmarshal(configJSON, &m)
+		if err != nil {
+			fmt.Println("unmarshal postgres const err", err)
+			return nil
+		}
+
+		psqlInfo = fmt.Sprintf("host=%s port=%d user=%s "+
+			"password=%s dbname=%s sslmode=disable",
+			m["host"], int(m["port"].(float64)), m["user"], m["password"], m["dbname"])
+	}
 
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
