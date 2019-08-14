@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strconv"
 
 	_ "github.com/lib/pq"
 )
@@ -14,9 +15,16 @@ func PostgresConnection() *sql.DB {
 	var psqlInfo string
 
 	if os.Getenv("DATABASE_URL") != "" {
+		port, err := strconv.Atoi(os.Getenv("port"))
+		if err != nil {
+			// handle error
+			fmt.Println(err)
+			return nil
+		}
+
 		psqlInfo = fmt.Sprintf("host=%s port=%d user=%s "+
 			"password=%s dbname=%s sslmode=disable",
-			os.Getenv("host"), os.Getenv("port"), os.Getenv("user"), os.Getenv("password"), os.Getenv("dbname"))
+			os.Getenv("host"), port, os.Getenv("user"), os.Getenv("password"), os.Getenv("dbname"))
 	} else {
 		configJSON, err := ioutil.ReadFile("utilities/postgres-const.json")
 		if err != nil {
@@ -34,8 +42,6 @@ func PostgresConnection() *sql.DB {
 			"password=%s dbname=%s sslmode=disable",
 			m["host"], int(m["port"].(float64)), m["user"], m["password"], m["dbname"])
 	}
-
-	fmt.Println(psqlInfo)
 
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
