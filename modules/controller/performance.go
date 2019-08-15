@@ -36,13 +36,18 @@ func PostPerformance(c *gin.Context) {
 					if category != "Email" && category != "Date" && !strings.HasSuffix(category, "_id") {
 						var columnNames []string
 						var detailValues []interface{}
+						var sumValues int
 
 						tableName := strings.ToLower(category)
 
 						for _, field := range details.Field(category).Fields() {
 							columnNames = append(columnNames, strings.ToLower(field.Name()))
 							detailValues = append(detailValues, field.Value())
+							sumValues += field.Value().(int)
 						}
+
+						columnNames = append(columnNames, "average")
+						detailValues = append(detailValues, sumValues/len(detailValues))
 
 						addedID := connections.InsertPostgresData(conn, tableName, columnNames, detailValues)
 						performance[strings.Title(category)+"_id"] = addedID
