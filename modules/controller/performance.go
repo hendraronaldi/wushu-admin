@@ -76,6 +76,7 @@ func PostPerformance(c *gin.Context) {
 					"response": "connection fail",
 				})
 			}
+			defer conn.Close()
 		}
 	}
 }
@@ -116,6 +117,7 @@ func GetPerformance(c *gin.Context) {
 		performances = append(performances, performance)
 	}
 	// get any error encountered during iteration
+	defer conn.Close()
 	err = rows.Err()
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -165,6 +167,7 @@ func GetUserPerformance(c *gin.Context) {
 		}
 		performances = append(performances, performance)
 	}
+	defer conn.Close()
 	// get any error encountered during iteration
 	err = rows.Err()
 	if err != nil || performances == nil {
