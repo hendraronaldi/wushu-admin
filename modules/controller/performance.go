@@ -137,6 +137,7 @@ func GetUserPerformance(c *gin.Context) {
 	query := `SELECT * FROM performance, flexibility, power
 	WHERE performance.flexibility_id = flexibility.flexibility_id
 	AND performance.email LIKE '` + email + `'
+	AND date_part('year', performance.date) = date_part('year', current_date)
 	AND performance.power_id = power.power_id
 	AND performance.performance_id > 0
 	AND performance.flexibility_id > 0
