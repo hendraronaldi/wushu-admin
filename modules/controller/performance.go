@@ -134,14 +134,34 @@ func GetPerformance(c *gin.Context) {
 }
 
 func GetUserPerformance(c *gin.Context) {
+	userPerformance := make(map[string]interface{})
+	var dates []interface{}
+
+	flexibility := make(map[string][]interface{})
+	power := make(map[string][]interface{})
+
 	var performance model.Performance
-	var performances []interface{}
-	var unusedID string
+	var flexiblityAverage interface{}
+	var powerAverage interface{}
+
 	email := c.Param("email")
+	userPerformance["email"] = email
 
 	conn := connections.PostgresConnection()
 
-	query := `SELECT * FROM performance, flexibility, power
+	query := `SELECT performance.date,
+	flexibility.shoulder,
+	flexibility.wrist,
+	flexibility.waist,
+	flexibility.leg,
+	flexibility.average as flexibility_average,
+	power.jump,
+	power.kick,
+	power.strike,
+	power.handswing,
+	power.spin,
+	power.legswing,
+	power.average as power_average FROM performance, flexibility, power
 	WHERE performance.flexibility_id = flexibility.flexibility_id
 	AND performance.email LIKE '` + email + `'
 	AND date_part('year', performance.date) = date_part('year', current_date)
@@ -159,27 +179,49 @@ func GetUserPerformance(c *gin.Context) {
 	}
 	defer rows.Close()
 	for rows.Next() {
-		err = rows.Scan(&performance.Date, &performance.Flexibility_id, &performance.Email, &unusedID, &performance.Power_id,
-			&unusedID, &performance.Flexibility.Shoulder, &performance.Flexibility.Wrist,
-			&performance.Flexibility.Waist, &performance.Flexibility.Leg,
-			&unusedID, &performance.Power.Jump, &performance.Power.Kick,
-			&performance.Power.Strike, &performance.Power.HandSwing, &performance.Power.Spin, &performance.Power.LegSwing)
+		err = rows.Scan(&performance.Date,
+			&performance.Flexibility.Shoulder, &performance.Flexibility.Wrist,
+			&performance.Flexibility.Waist, &performance.Flexibility.Leg, &flexiblityAverage,
+			&performance.Power.Jump, &performance.Power.Kick,
+			&performance.Power.Strike, &performance.Power.HandSwing, &performance.Power.Spin,
+			&performance.Power.LegSwing, &powerAverage)
+
 		if err != nil {
 			// handle this error
 			c.JSON(400, gin.H{
 				"response": "bind data error",
 			})
 		}
-		performances = append(performances, performance)
+
+		dates = append(dates, performance.Date)
+
+		flexibility["shoulder"] = append(flexibility["shoulder"], performance.Flexibility.Shoulder)
+		flexibility["wrist"] = append(flexibility["wrist"], performance.Flexibility.Wrist)
+		flexibility["waist"] = append(flexibility["waist"], performance.Flexibility.Waist)
+		flexibility["leg"] = append(flexibility["leg"], performance.Flexibility.Leg)
+		flexibility["average"] = append(flexibility["average"], flexiblityAverage)
+
+		power["jump"] = append(power["jump"], performance.Power.Jump)
+		power["kick"] = append(power["kick"], performance.Power.Kick)
+		power["strike"] = append(power["strike"], performance.Power.Strike)
+		power["spin"] = append(power["spin"], performance.Power.Spin)
+		power["handswing"] = append(power["handswing"], performance.Power.HandSwing)
+		power["legswing"] = append(power["legswing"], performance.Power.LegSwing)
+		power["average"] = append(power["average"], powerAverage)
 	}
 	defer conn.Close()
+	userPerformance["dates"] = dates
+	userPerformance["flexibility"] = flexibility
+	userPerformance["power"] = power
+
 	// get any error encountered during iteration
 	err = rows.Err()
-	if err != nil || performances == nil {
+	if err != nil || userPerformance == nil {
 		c.JSON(400, gin.H{
 			"response": "iteration error",
 		})
 	} else {
-		c.JSON(200, performances)
+		// c.JSON(200, performances)
+		c.JSON(200, userPerformance)
 	}
 }
