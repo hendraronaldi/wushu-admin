@@ -51,6 +51,7 @@ func AdminRouter(router *gin.Engine) {
 	router.POST("/reject", controller.RejectUser)
 	router.POST("/admin-login", controller.AdminLogin)
 	router.GET("/users", controller.GetAllUser)
+	router.GET("/users/:status", controller.GetUserByStatus)
 }
 
 func TutorialRouter(router *gin.Engine) {

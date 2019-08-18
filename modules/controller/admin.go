@@ -40,6 +40,42 @@ func GetAllUser(c *gin.Context) {
 	}
 }
 
+func GetUserByStatus(c *gin.Context) {
+	var users []map[string]interface{}
+	var errs error
+	var codeStatus int
+	status := c.Param("status")
+	if status == "verified" {
+		codeStatus = 1
+	} else if status == "rejected" {
+		codeStatus = 2
+	} else {
+		codeStatus = 0
+	}
+
+	conn := connections.FirebaseConnection()
+	iter := conn.Collection("users").Where("Status", "==", codeStatus).Documents(context.Background())
+	for {
+		doc, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			errs = err
+			break
+		}
+		users = append(users, doc.Data())
+	}
+
+	if errs != nil {
+		c.JSON(400, gin.H{
+			"response": "get users error",
+		})
+	} else {
+		c.JSON(200, users)
+	}
+}
+
 func ValidateUser(c *gin.Context) {
 	var user model.User
 	var err error
