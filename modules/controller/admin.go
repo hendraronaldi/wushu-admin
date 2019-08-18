@@ -45,9 +45,9 @@ func GetUserByStatus(c *gin.Context) {
 	var errs error
 	var codeStatus int
 	status := c.Param("status")
-	if status == "verified" {
+	if strings.ToLower(status) == "verified" {
 		codeStatus = 1
-	} else if status == "rejected" {
+	} else if strings.ToLower(status) == "rejected" {
 		codeStatus = 2
 	} else {
 		codeStatus = 0
