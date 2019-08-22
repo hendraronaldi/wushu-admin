@@ -71,6 +71,7 @@ func PerformanceRouter(router *gin.Engine) {
 
 func LineBotRouter(router *gin.Engine) {
 	router.GET("/line", line.CallbackHandler)
+	router.POST("/line", line.CallbackHandler)
 }
 
 func AuthRequired() gin.HandlerFunc {
