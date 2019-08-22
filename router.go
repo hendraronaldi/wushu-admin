@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"work/wushu-backend/chatbot/line"
 	"work/wushu-backend/modules/controller"
 
 	"github.com/gin-contrib/sessions"
@@ -33,6 +34,7 @@ func SetupRouter(router *gin.Engine) {
 }
 
 func Router(router *gin.Engine) {
+	LineBotRouter(router)
 	UsersRouter(router)
 	AdminRouter(router)
 	TutorialRouter(router)
@@ -65,6 +67,10 @@ func PerformanceRouter(router *gin.Engine) {
 	router.POST("/performance", controller.PostPerformance)
 	router.GET("/performance", controller.GetPerformance)
 	router.GET("/performance/:email", controller.GetUserPerformance)
+}
+
+func LineBotRouter(router *gin.Engine) {
+	router.GET("/line", line.CallbackHandler)
 }
 
 func AuthRequired() gin.HandlerFunc {
