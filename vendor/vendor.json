@@ -261,6 +261,12 @@
 			"revisionTime": "2019-07-16T17:26:55Z"
 		},
 		{
+			"checksumSHA1": "mmK/Z/F9LOenziCPcbgt8uDK0hw=",
+			"path": "github.com/line/line-bot-sdk-go/linebot",
+			"revision": "546d369e1ac50c673b87f9ab8c0ba8da8aab6b44",
+			"revisionTime": "2018-07-02T11:20:58Z"
+		},
+		{
 			"checksumSHA1": "GiVgQkx5acnq+JZtYiuHPlhHoso=",
 			"path": "github.com/mattn/go-isatty",
 			"revision": "3fb116b820352b7f0c281308a4d6250c22d94e27",
