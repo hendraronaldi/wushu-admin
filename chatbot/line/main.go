@@ -13,6 +13,7 @@
 package line
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -71,10 +72,17 @@ func CallbackHandler(c *gin.Context) {
 	}
 
 	for _, event := range events {
+		fmt.Println(event.Source.UserID)
 		switch event.Type {
 		case linebot.EventTypeMessage:
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
+				_, err := app.bot.ReplyMessage(event.ReplyToken, message).Do()
+				if err != nil {
+					log.Println("Quota err:", err)
+				}
+
+			case *linebot.ImageMessage:
 				_, err := app.bot.ReplyMessage(event.ReplyToken, message).Do()
 				if err != nil {
 					log.Println("Quota err:", err)
