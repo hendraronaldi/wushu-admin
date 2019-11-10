@@ -3,9 +3,11 @@ package connections
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
+	"os"
 
 	"cloud.google.com/go/storage"
 	firebase "firebase.google.com/go"
@@ -13,12 +15,24 @@ import (
 )
 
 func FirebaseStorage() *storage.BucketHandle {
-	ctx := context.Background()
 	config := &firebase.Config{
 		StorageBucket: "admin-wushu.appspot.com",
 	}
-	opt := option.WithCredentialsFile("utilities/admin-wushu-firebase.json")
-	app, err := firebase.NewApp(ctx, config, opt)
+	ctx := context.Background()
+	var err error
+	var configJSON []byte
+
+	if configJSONString := os.Getenv("firebase-auth"); configJSONString != "" {
+		configJSON = []byte(configJSONString)
+	} else {
+		configJSON, err = ioutil.ReadFile("utilities/admin-wushu-firebase.json")
+		if err != nil {
+			fmt.Println("read file err", err)
+			return nil
+		}
+	}
+	sa := option.WithCredentialsJSON(configJSON)
+	app, err := firebase.NewApp(ctx, config, sa)
 	if err != nil {
 		log.Fatalln(err)
 	}
