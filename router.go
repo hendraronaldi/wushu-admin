@@ -72,6 +72,8 @@ func PerformanceRouter(router *gin.Engine) {
 func LineBotRouter(router *gin.Engine) {
 	router.GET("/line", line.CallbackHandler)
 	router.POST("/line", line.CallbackHandler)
+	router.GET("/linebot", controller.GetLineBotQR)
+	router.POST("/payment-confirmation", controller.PostPaymentConfirmation)
 }
 
 func AuthRequired() gin.HandlerFunc {
