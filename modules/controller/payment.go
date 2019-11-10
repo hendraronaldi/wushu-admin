@@ -3,8 +3,13 @@ package controller
 import (
 	"bytes"
 	"encoding/base64"
+	"os"
 	"strings"
+	"work/wushu-backend/chatbot/line"
+	"work/wushu-backend/chatbot/line/messages"
 	"work/wushu-backend/modules/connections"
+
+	"github.com/line/line-bot-sdk-go/linebot"
 
 	"github.com/gin-gonic/gin"
 )
@@ -44,8 +49,23 @@ func PostPaymentConfirmation(c *gin.Context) {
 			"response": "fail to save payment confirmation",
 		})
 	} else {
-		c.JSON(200, gin.H{
-			"response": "post payment confirmation success",
-		})
+		var lineMessages []linebot.Message
+		adminID := os.Getenv("line-admin-id")
+		imgURL := os.Getenv("firebase-storage") + filename
+
+		textMessage := messages.TextMessage(form.Value["fullname"][0] + form.Value["date"][0])
+		imgMessage := messages.ImageMessage(imgURL)
+
+		lineMessages = append(lineMessages, textMessage, imgMessage)
+
+		if err := line.PushHandler(adminID, lineMessages); err != nil {
+			c.JSON(400, gin.H{
+				"response": "fail to send payment confirmation",
+			})
+		} else {
+			c.JSON(200, gin.H{
+				"response": "post payment confirmation success",
+			})
+		}
 	}
 }
