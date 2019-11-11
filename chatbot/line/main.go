@@ -83,8 +83,7 @@ func CallbackHandler(c *gin.Context) {
 				}
 
 			case *linebot.ImageMessage:
-				m := linebot.NewImageMessage("https://www.googleapis.com/download/storage/v1/b/admin-wushu.appspot.com/o/hendra%20ronaldi-2019-11-10.png?generation=1573482782310332&alt=media", "https://www.googleapis.com/download/storage/v1/b/admin-wushu.appspot.com/o/hendra%20ronaldi-2019-11-10.png?generation=1573482782310332&alt=media")
-				_, err := app.bot.ReplyMessage(event.ReplyToken, m).Do()
+				_, err := app.bot.ReplyMessage(event.ReplyToken, message).Do()
 				if err != nil {
 					log.Println("Quota err:", err)
 				}
