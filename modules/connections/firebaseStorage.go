@@ -64,16 +64,31 @@ func GetFileFirebaseStorage(bucket *storage.BucketHandle, filename string) ([]by
 	return data, nil
 }
 
-func PostFileFirebaseStorage(bucket *storage.BucketHandle, filename string, file *bytes.Reader) error {
+func PostFileFirebaseStorage(bucket *storage.BucketHandle, filename string, file *bytes.Reader) (string, error) {
 	ctx := context.Background()
 	// [START upload_file]
-	wc := bucket.Object(filename).NewWriter(ctx)
+	obj := bucket.Object(filename)
+	wc := obj.NewWriter(ctx)
 	if _, err := io.Copy(wc, file); err != nil {
-		return err
+		return "", err
 	}
 	if err := wc.Close(); err != nil {
-		return err
+		return "", err
 	}
 	// [END upload_file]
-	return nil
+
+	// [START public]
+	acl := obj.ACL()
+	if err := acl.Set(ctx, storage.AllUsers, storage.RoleReader); err != nil {
+		return "", err
+	}
+	// [END public]
+
+	objAttrs, err := obj.Attrs(ctx)
+	if err != nil {
+		// TODO: Handle error.
+		return "", err
+	}
+
+	return objAttrs.MediaLink, nil
 }

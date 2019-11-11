@@ -9,9 +9,8 @@ import (
 	"work/wushu-backend/chatbot/line/messages"
 	"work/wushu-backend/modules/connections"
 
-	"github.com/line/line-bot-sdk-go/linebot"
-
 	"github.com/gin-gonic/gin"
+	"github.com/line/line-bot-sdk-go/linebot"
 )
 
 func GetLineBotQR(c *gin.Context) {
@@ -44,14 +43,13 @@ func PostPaymentConfirmation(c *gin.Context) {
 		})
 	}
 
-	if err := connections.PostFileFirebaseStorage(bucket, filename, res); err != nil {
+	if imgURL, err := connections.PostFileFirebaseStorage(bucket, filename, res); err != nil {
 		c.JSON(400, gin.H{
 			"response": "fail to save payment confirmation",
 		})
 	} else {
 		var lineMessages []linebot.Message
 		adminID := os.Getenv("line-admin-id")
-		imgURL := os.Getenv("firebase-storage") + filename
 
 		textMessage := messages.TextMessage(form.Value["fullname"][0] + form.Value["date"][0])
 		imgMessage := messages.ImageMessage(imgURL)
