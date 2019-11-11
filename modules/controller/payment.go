@@ -51,7 +51,7 @@ func PostPaymentConfirmation(c *gin.Context) {
 		var lineMessages []linebot.Message
 		adminID := os.Getenv("line-admin-id")
 
-		textMessage := messages.TextMessage(form.Value["fullname"][0] + form.Value["date"][0])
+		textMessage := messages.TextMessage(form.Value["fullname"][0] + "-" + form.Value["date"][0])
 		imgMessage := messages.ImageMessage(imgURL)
 
 		lineMessages = append(lineMessages, textMessage, imgMessage)
