@@ -15,5 +15,8 @@ func PushHandler(id string, messages []linebot.Message) error {
 		messages...,
 	).Do()
 
-	return err
+	if err != nil {
+		return err
+	}
+	return nil
 }
