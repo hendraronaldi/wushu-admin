@@ -31,7 +31,7 @@ func ReplyHandler(id string, m linebot.Message) []linebot.Message {
 			case *linebot.TextMessage:
 				riveReply = GetBotReply(message.Text, id, "new")
 				fmt.Println("line 32", riveReply)
-				if message.Text == riveReply {
+				if strings.ToLower(message.Text) == riveReply {
 					fmt.Println("registration process")
 					var confirmation []map[string]string
 					yes := make(map[string]string)
