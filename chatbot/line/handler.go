@@ -42,7 +42,7 @@ func ReplyHandler(id string, m linebot.Message) []linebot.Message {
 					confirmation = append(confirmation, yes, no)
 
 					botReply = append(botReply, messages.TextMessage("Your name is: "+riveReply))
-					botReply = append(botReply, messages.ConfirmCustomMessage(confirmation))
+					botReply = append(botReply, messages.ConfirmCustomMessage("Are you sure?", confirmation))
 				} else {
 					fmt.Println("new user welcome")
 					botReply = append(botReply, messages.TextMessage(riveReply))
@@ -93,7 +93,7 @@ func ReplyHandler(id string, m linebot.Message) []linebot.Message {
 				confirmation = append(confirmation, yes, no)
 
 				textMessage := messages.TextMessage(fmt.Sprint(user["Name"]) + "'s proof of payment")
-				botPushMessage = append(botPushMessage, textMessage, message, messages.ConfirmCustomMessage(confirmation))
+				botPushMessage = append(botPushMessage, textMessage, message, messages.ConfirmCustomMessage("Are you sure?", confirmation))
 				err := PushHandler(adminID, botPushMessage)
 				if err != nil {
 					GetBotReply("payment", id, "registered")
