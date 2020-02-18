@@ -15,6 +15,7 @@ import (
 var adminID = os.Getenv("line-admin-id")
 
 func ReplyHandler(id string, m linebot.Message) []linebot.Message {
+	fmt.Println("Admin ID:", adminID)
 	var riveReply string
 	var botPushMessage []linebot.Message
 	var botReply []linebot.Message
@@ -31,6 +32,7 @@ func ReplyHandler(id string, m linebot.Message) []linebot.Message {
 				riveReply = GetBotReply(message.Text, id, "new")
 				fmt.Println("line 32", riveReply)
 				if message.Text == riveReply {
+					fmt.Println("registration process")
 					var confirmation []map[string]string
 					yes := make(map[string]string)
 					no := make(map[string]string)
@@ -42,6 +44,7 @@ func ReplyHandler(id string, m linebot.Message) []linebot.Message {
 					botReply = append(botReply, messages.TextMessage("Your name is: "+riveReply))
 					botReply = append(botReply, messages.ConfirmCustomMessage(confirmation))
 				} else {
+					fmt.Println("new user welcome")
 					botReply = append(botReply, messages.TextMessage(riveReply))
 					if riveReply == "hello, welcome to Teratai Putih" {
 						botReply = append(botReply, menu...)

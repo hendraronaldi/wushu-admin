@@ -4,10 +4,11 @@ import (
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 
-var defaultMenu = []string{"Register"}
-var homeMenu = []string{"Proof of Payment"}
+// var defaultMenu = []string{"Register"}
+// var homeMenu = []string{"Proof of Payment"}
 
 func BeginMessage() []linebot.Message {
+	defaultMenu := []string{"Register"}
 	var template []linebot.Message
 	buttonMessage := ButtonMessage(defaultMenu)
 
@@ -16,6 +17,7 @@ func BeginMessage() []linebot.Message {
 }
 
 func HomeMessage() []linebot.Message {
+	homeMenu := []string{"Proof of Payment"}
 	var template []linebot.Message
 	buttonMessage := ButtonMessage(homeMenu)
 
