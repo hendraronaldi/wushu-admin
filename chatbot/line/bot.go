@@ -23,16 +23,16 @@ func InitBotsMap() {
 
 //this method is used to load Context, from rivescript
 func LoadContext(id, category string) {
-	if Bots[id] == nil {
+	if Bots[id+category] == nil {
 		// var (
 		// 	debug = flag.Bool("debug", false, "Enable debug mode for RiveScript.")
 		// 	utf8  = flag.Bool("utf8", true, "Enable UTF-8 mode")
 		// )
-		Bots[id] = rivescript.New(&rivescript.Config{
+		Bots[id+category] = rivescript.New(&rivescript.Config{
 			Debug: false,
 			UTF8:  true, // UTF-8 support enabled
 		})
-		Bots[id].SetHandler("javascript", javascript.New(Bots[id]))
+		Bots[id+category].SetHandler("javascript", javascript.New(Bots[id]))
 	}
 
 	//get Bot directory
@@ -40,9 +40,9 @@ func LoadContext(id, category string) {
 	var err error
 
 	if category == "new" {
-		err = Bots[id].LoadFile("./scripts/newBot.rive")
+		err = Bots[id+category].LoadFile("./scripts/newBot.rive")
 	} else {
-		err = Bots[id].LoadFile("./scripts/registeredBot.rive")
+		err = Bots[id+category].LoadFile("./scripts/registeredBot.rive")
 	}
 
 	// err := Bot.LoadDirectory(directory[1]) //get script location on array index of 1
@@ -50,7 +50,7 @@ func LoadContext(id, category string) {
 		fmt.Println(err)
 		// GetErrorResponse("Error loading from file:", err)
 	}
-	Bots[id].SortReplies()
+	Bots[id+category].SortReplies()
 }
 
 func GetBotReply(message, id, category string) string {

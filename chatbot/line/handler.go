@@ -24,6 +24,7 @@ func ReplyHandler(id string, m linebot.Message) []linebot.Message {
 	if id != adminID {
 		user, err := controller.FindLineUser(id)
 		if err != nil || user == nil || fmt.Sprint(user["ID"]) != id {
+			LoadContext(id, "new")
 			menu = messages.BeginMessage()
 			switch message := m.(type) {
 			case *linebot.TextMessage:
@@ -57,6 +58,7 @@ func ReplyHandler(id string, m linebot.Message) []linebot.Message {
 			return botReply
 		}
 
+		LoadContext(id, "registered")
 		menu = messages.HomeMessage()
 		switch message := m.(type) {
 		case *linebot.TextMessage:
