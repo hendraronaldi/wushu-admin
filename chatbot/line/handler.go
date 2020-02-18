@@ -131,7 +131,8 @@ func ReplyHandler(id string, m linebot.Message) []linebot.Message {
 				if err != nil {
 					fmt.Println("Fail to send proof of payment error: ", err)
 					GetBotReply("payment", id, "registered")
-					botReply = append(botReply, messages.TextMessage("Fail to send proof of payment, please send it again"))
+					botReply = append(botReply, message)
+					// botReply = append(botReply, messages.TextMessage("Fail to send proof of payment, please send it again"))
 				} else {
 					botReply = append(botReply, messages.TextMessage("Your proof of payment has been sent, please wait for the confirmation"))
 				}
