@@ -75,18 +75,13 @@ func CallbackHandler(c *gin.Context) {
 		fmt.Println(event.Source.UserID)
 		switch event.Type {
 		case linebot.EventTypeMessage:
-			switch message := event.Message.(type) {
-			case *linebot.TextMessage:
-				_, err := app.bot.ReplyMessage(event.ReplyToken, message).Do()
-				if err != nil {
-					log.Println("Quota err:", err)
-				}
-
-			case *linebot.ImageMessage:
-				_, err := app.bot.ReplyMessage(event.ReplyToken, message).Do()
-				if err != nil {
-					log.Println("Quota err:", err)
-				}
+			botReply := ReplyHandler(event.Source.UserID, event.Message)
+			_, err := app.bot.ReplyMessage(
+				event.ReplyToken,
+				botReply...,
+			).Do()
+			if err != nil {
+				log.Println("Quota err:", err)
 			}
 		}
 	}
