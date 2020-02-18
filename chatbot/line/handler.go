@@ -126,6 +126,7 @@ func ReplyHandler(id string, m linebot.Message) []linebot.Message {
 				botPushMessage = append(botPushMessage, textMessage, message, messages.ConfirmCustomMessage("Are you sure?", confirmation))
 				err := PushHandler(adminID, botPushMessage)
 				if err != nil {
+					fmt.Println("Fail to send proof of payment error: ", err)
 					GetBotReply("payment", id, "registered")
 					botReply = append(botReply, messages.TextMessage("Fail to send proof of payment, please send it again"))
 				} else {
