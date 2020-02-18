@@ -29,6 +29,7 @@ func ReplyHandler(id string, m linebot.Message) []linebot.Message {
 			switch message := m.(type) {
 			case *linebot.TextMessage:
 				riveReply = GetBotReply(message.Text, id, "new")
+				fmt.Println("line 32", riveReply)
 				if message.Text == riveReply {
 					var confirmation []map[string]string
 					yes := make(map[string]string)
@@ -48,12 +49,14 @@ func ReplyHandler(id string, m linebot.Message) []linebot.Message {
 				}
 			default:
 				riveReply = GetBotReply("home", id, "new")
+				fmt.Println("line 52", riveReply)
 				botReply = append(botReply, messages.TextMessage(riveReply))
 				botReply = append(botReply, menu...)
 			}
 			return botReply
 
 		} else if fmt.Sprint(user["Status"]) == "false" {
+			LoadContext(id, "new")
 			botReply = append(botReply, messages.TextMessage("Please wait for the user verification"))
 			return botReply
 		}
@@ -67,6 +70,7 @@ func ReplyHandler(id string, m linebot.Message) []linebot.Message {
 				botReply = append(botReply, menu...)
 			} else {
 				riveReply = GetBotReply(message.Text, id, "registered")
+				fmt.Println("line 73", riveReply)
 				botReply = append(botReply, messages.TextMessage(riveReply))
 				if riveReply == "hello, welcome to Teratai Putih" {
 					botReply = append(botReply, menu...)
@@ -75,6 +79,7 @@ func ReplyHandler(id string, m linebot.Message) []linebot.Message {
 
 		case *linebot.ImageMessage:
 			riveReply = GetBotReply("yes proof of payment", id, "registered")
+			fmt.Println("line 81", riveReply)
 			if riveReply == "proof of payment" {
 				var confirmation []map[string]string
 				yes := make(map[string]string)
