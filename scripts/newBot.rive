@@ -1,0 +1,16 @@
++ register
+- Please input your member's full name{topic=register}
+
++ *
+- hello, welcome to Teratai Putih
+
+> topic register
+    + yes
+    - Registration request has been sent, please wait for the confirmation{topic=random}
+
+    + no
+    - Please input the correct name
+
+    + *
+    - <star>
+< topic

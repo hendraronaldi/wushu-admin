@@ -1,0 +1,13 @@
++ proof of payment
+- Please upload the proof of payment{topic=payment}
+
++ *
+- hello, welcome to Teratai Putih
+
+> topic payment
+    + yes proof of payment
+    - proof of payment{topic=random}
+
+    + *
+    - Please upload the proof of payment
+< topic
