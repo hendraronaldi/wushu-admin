@@ -79,7 +79,7 @@ func CallbackHandler(c *gin.Context) {
 		fmt.Println(event.Source.UserID)
 		switch event.Type {
 		case linebot.EventTypeMessage:
-			botReply := ReplyHandler(event.Source.UserID, event.Message)
+			botReply := ReplyHandler(app, event.Source.UserID, event.Message)
 			_, err := app.bot.ReplyMessage(
 				event.ReplyToken,
 				botReply...,

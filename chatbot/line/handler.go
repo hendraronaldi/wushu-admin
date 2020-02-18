@@ -14,7 +14,7 @@ import (
 
 var adminID = os.Getenv("line-admin-id")
 
-func ReplyHandler(id string, m linebot.Message) []linebot.Message {
+func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 	fmt.Println("Admin ID:", adminID)
 	var riveReply string
 	var botPushMessage []linebot.Message
@@ -117,9 +117,13 @@ func ReplyHandler(id string, m linebot.Message) []linebot.Message {
 				var confirmation []map[string]string
 				yes := make(map[string]string)
 				no := make(map[string]string)
-				fmt.Println("message:", message)
-				fmt.Println("imageURL:", message.OriginalContentURL)
-				fmt.Println("imagePreviewURL:", message.PreviewImageURL)
+
+				content, errc := app.bot.GetMessageContent(message.ID).Do()
+				if errc != nil {
+					fmt.Println("retrieve image error:", errc)
+				}
+				defer content.Content.Close()
+				fmt.Println("content:", content)
 
 				yes["Yes"] = "yes\nproof of payment\n" + id + "\n" + message.OriginalContentURL
 				no["No"] = "no\nproof of payment\n" + id + "\n" + message.OriginalContentURL
@@ -131,8 +135,7 @@ func ReplyHandler(id string, m linebot.Message) []linebot.Message {
 				if err != nil {
 					fmt.Println("Fail to send proof of payment error: ", err)
 					GetBotReply("payment", id, "registered")
-					botReply = append(botReply, message)
-					// botReply = append(botReply, messages.TextMessage("Fail to send proof of payment, please send it again"))
+					botReply = append(botReply, messages.TextMessage("Fail to send proof of payment, please send it again"))
 				} else {
 					botReply = append(botReply, messages.TextMessage("Your proof of payment has been sent, please wait for the confirmation"))
 				}
