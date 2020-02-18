@@ -43,6 +43,24 @@ func ReplyHandler(id string, m linebot.Message) []linebot.Message {
 
 					botReply = append(botReply, messages.TextMessage("Your name is: "+riveReply))
 					botReply = append(botReply, messages.ConfirmCustomMessage("Are you sure?", confirmation))
+				} else if strings.HasPrefix(strings.ToLower(message.Text), "yes\n") {
+					fmt.Println("sending registration confirmation")
+					var confirmation []map[string]string
+					yes := make(map[string]string)
+					no := make(map[string]string)
+
+					yes["Yes"] = strings.ToLower(message.Text)
+					no["No"] = "no\n" + strings.ToLower(message.Text)[4:]
+					confirmation = append(confirmation, yes, no)
+
+					botPushMessage = append(botPushMessage, messages.TextMessage(strings.ToLower(message.Text)))
+					botPushMessage = append(botPushMessage, messages.ConfirmCustomMessage("Are you sure?", confirmation))
+					err := PushHandler(adminID, botPushMessage)
+					if err != nil {
+						botReply = append(botReply, messages.TextMessage("Fail to send user registration"))
+					} else {
+						botReply = append(botReply, messages.TextMessage("User registration has been sent, please wait for the confirmation"))
+					}
 				} else {
 					fmt.Println("new user welcome")
 					botReply = append(botReply, messages.TextMessage(riveReply))
