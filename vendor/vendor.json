@@ -111,6 +111,48 @@
 			"revisionTime": "2019-06-11T16:49:09Z"
 		},
 		{
+			"checksumSHA1": "ESTDAdLgrIhTrM7H0IpVl35PG/E=",
+			"path": "github.com/aichaos/rivescript-go",
+			"revision": "aa903a726d956217b7e62f1843317bc1d27b9de2",
+			"revisionTime": "2017-05-01T02:28:32Z"
+		},
+		{
+			"checksumSHA1": "Oh/kUkxNxJYtrwUkVgWZV+uJHdU=",
+			"path": "github.com/aichaos/rivescript-go/ast",
+			"revision": "aa903a726d956217b7e62f1843317bc1d27b9de2",
+			"revisionTime": "2017-05-01T02:28:32Z"
+		},
+		{
+			"checksumSHA1": "EsFueIQiRL3Yqjsi7jSM0jzFC+8=",
+			"path": "github.com/aichaos/rivescript-go/lang/javascript",
+			"revision": "aa903a726d956217b7e62f1843317bc1d27b9de2",
+			"revisionTime": "2017-05-01T02:28:32Z"
+		},
+		{
+			"checksumSHA1": "munxV6sX4+XHVcqovluJdx0MaDs=",
+			"path": "github.com/aichaos/rivescript-go/macro",
+			"revision": "aa903a726d956217b7e62f1843317bc1d27b9de2",
+			"revisionTime": "2017-05-01T02:28:32Z"
+		},
+		{
+			"checksumSHA1": "jVM3BCzs8cMhvAUYrf+dDjBXDpU=",
+			"path": "github.com/aichaos/rivescript-go/parser",
+			"revision": "aa903a726d956217b7e62f1843317bc1d27b9de2",
+			"revisionTime": "2017-05-01T02:28:32Z"
+		},
+		{
+			"checksumSHA1": "hrDjF4o7wKlgqnx/xGk0jog/XRo=",
+			"path": "github.com/aichaos/rivescript-go/sessions",
+			"revision": "aa903a726d956217b7e62f1843317bc1d27b9de2",
+			"revisionTime": "2017-05-01T02:28:32Z"
+		},
+		{
+			"checksumSHA1": "QlTwvWCnZS2KCdfBCQHQ+r6Wzps=",
+			"path": "github.com/aichaos/rivescript-go/sessions/memory",
+			"revision": "aa903a726d956217b7e62f1843317bc1d27b9de2",
+			"revisionTime": "2017-05-01T02:28:32Z"
+		},
+		{
 			"checksumSHA1": "Ps2Bsd1OjhSmAv4uVA2ZIZx7w7k=",
 			"path": "github.com/fatih/structs",
 			"revision": "878a968ab22548362a09bdb3322f98b00f470d46",
@@ -271,6 +313,55 @@
 			"path": "github.com/mattn/go-isatty",
 			"revision": "3fb116b820352b7f0c281308a4d6250c22d94e27",
 			"revisionTime": "2018-08-30T10:17:45Z"
+		},
+		{
+			"checksumSHA1": "bcGkpeRxYNSzs39ruoIyG71ACTA=",
+			"origin": "github.com/aichaos/rivescript-go/vendor/github.com/robertkrimen/otto",
+			"path": "github.com/robertkrimen/otto",
+			"revision": "aa903a726d956217b7e62f1843317bc1d27b9de2",
+			"revisionTime": "2017-05-01T02:28:32Z"
+		},
+		{
+			"checksumSHA1": "JUSDg6lTqVrODl0mRFDMMMkFvmw=",
+			"origin": "github.com/aichaos/rivescript-go/vendor/github.com/robertkrimen/otto/ast",
+			"path": "github.com/robertkrimen/otto/ast",
+			"revision": "aa903a726d956217b7e62f1843317bc1d27b9de2",
+			"revisionTime": "2017-05-01T02:28:32Z"
+		},
+		{
+			"checksumSHA1": "L0KsB2EzTlPgv0iae3q3SukNW7U=",
+			"origin": "github.com/aichaos/rivescript-go/vendor/github.com/robertkrimen/otto/dbg",
+			"path": "github.com/robertkrimen/otto/dbg",
+			"revision": "aa903a726d956217b7e62f1843317bc1d27b9de2",
+			"revisionTime": "2017-05-01T02:28:32Z"
+		},
+		{
+			"checksumSHA1": "IyD638BE79e40ir0bF6+fN9T0LY=",
+			"origin": "github.com/aichaos/rivescript-go/vendor/github.com/robertkrimen/otto/file",
+			"path": "github.com/robertkrimen/otto/file",
+			"revision": "aa903a726d956217b7e62f1843317bc1d27b9de2",
+			"revisionTime": "2017-05-01T02:28:32Z"
+		},
+		{
+			"checksumSHA1": "IMfTDRQdLnUFWxG6ywNGgED4DhY=",
+			"origin": "github.com/aichaos/rivescript-go/vendor/github.com/robertkrimen/otto/parser",
+			"path": "github.com/robertkrimen/otto/parser",
+			"revision": "aa903a726d956217b7e62f1843317bc1d27b9de2",
+			"revisionTime": "2017-05-01T02:28:32Z"
+		},
+		{
+			"checksumSHA1": "7J/7NaYRqKhBvZ+dTIutsEoEgFw=",
+			"origin": "github.com/aichaos/rivescript-go/vendor/github.com/robertkrimen/otto/registry",
+			"path": "github.com/robertkrimen/otto/registry",
+			"revision": "aa903a726d956217b7e62f1843317bc1d27b9de2",
+			"revisionTime": "2017-05-01T02:28:32Z"
+		},
+		{
+			"checksumSHA1": "/jMXYuXycBpTqWhRyJ2xsqvHvQI=",
+			"origin": "github.com/aichaos/rivescript-go/vendor/github.com/robertkrimen/otto/token",
+			"path": "github.com/robertkrimen/otto/token",
+			"revision": "aa903a726d956217b7e62f1843317bc1d27b9de2",
+			"revisionTime": "2017-05-01T02:28:32Z"
 		},
 		{
 			"checksumSHA1": "Tutue3nEgM/87jitUcYv6ODwyNE=",
