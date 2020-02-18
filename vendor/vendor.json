@@ -315,6 +315,12 @@
 			"revisionTime": "2018-08-30T10:17:45Z"
 		},
 		{
+			"checksumSHA1": "KOuKUuXT5y//rIGCR17blEk7M+g=",
+			"path": "github.com/polds/imgbase64",
+			"revision": "cb7bf37298b7c2d13bd2451f51674d6bbdb46e44",
+			"revisionTime": "2014-08-20T00:33:45Z"
+		},
+		{
 			"checksumSHA1": "bcGkpeRxYNSzs39ruoIyG71ACTA=",
 			"origin": "github.com/aichaos/rivescript-go/vendor/github.com/robertkrimen/otto",
 			"path": "github.com/robertkrimen/otto",
