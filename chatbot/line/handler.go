@@ -117,6 +117,9 @@ func ReplyHandler(id string, m linebot.Message) []linebot.Message {
 				var confirmation []map[string]string
 				yes := make(map[string]string)
 				no := make(map[string]string)
+				fmt.Println("message:", message)
+				fmt.Println("imageURL:", message.OriginalContentURL)
+				fmt.Println("imagePreviewURL:", message.PreviewImageURL)
 
 				yes["Yes"] = "yes\nproof of payment\n" + id + "\n" + message.OriginalContentURL
 				no["No"] = "no\nproof of payment\n" + id + "\n" + message.OriginalContentURL
