@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/gob"
 	"time"
+	"work/wushu-backend/chatbot/line"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
@@ -16,6 +17,7 @@ func main() {
 	store := cookie.NewStore([]byte("secret"))
 	router.Use(sessions.Sessions("mysession", store))
 	router.Use(CORSMiddleware())
+	line.LoadAllContext()
 	SetupRouter(router)
 	router.Run() // listen and serve on 0.0.0.0:8080
 }

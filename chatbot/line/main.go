@@ -30,6 +30,10 @@ var (
 	botType = "line"
 )
 
+func LoadAllContext() {
+	InitBotsMap()
+}
+
 func App() *LineTP {
 	var app *LineTP
 	var err error
