@@ -4,7 +4,7 @@ import (
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 
-func ButtonMessage(options []string) *linebot.TemplateMessage {
+func ButtonMessage(text string, options []string) *linebot.TemplateMessage {
 	var actions []linebot.TemplateAction
 	for _, option := range options {
 		actions = append(actions, linebot.NewMessageTemplateAction(option, option))
@@ -13,14 +13,14 @@ func ButtonMessage(options []string) *linebot.TemplateMessage {
 	template := linebot.NewButtonsTemplate(
 		"",
 		"",
-		"",
+		text,
 		actions...,
 	)
 
 	return linebot.NewTemplateMessage("button", template)
 }
 
-func ConfirmCustomMessage(options []map[string]string) *linebot.TemplateMessage {
+func ConfirmCustomMessage(text string, options []map[string]string) *linebot.TemplateMessage {
 	var actions []linebot.TemplateAction
 	for _, option := range options {
 		for key, val := range option {
@@ -31,7 +31,7 @@ func ConfirmCustomMessage(options []map[string]string) *linebot.TemplateMessage 
 	template := linebot.NewButtonsTemplate(
 		"",
 		"",
-		"",
+		text,
 		actions...,
 	)
 

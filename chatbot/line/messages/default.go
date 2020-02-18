@@ -10,7 +10,7 @@ import (
 func BeginMessage() []linebot.Message {
 	defaultMenu := []string{"Register"}
 	var template []linebot.Message
-	buttonMessage := ButtonMessage(defaultMenu)
+	buttonMessage := ButtonMessage("Home", defaultMenu)
 
 	template = append(template, buttonMessage)
 	return template
@@ -19,7 +19,7 @@ func BeginMessage() []linebot.Message {
 func HomeMessage() []linebot.Message {
 	homeMenu := []string{"Proof of Payment"}
 	var template []linebot.Message
-	buttonMessage := ButtonMessage(homeMenu)
+	buttonMessage := ButtonMessage("Home", homeMenu)
 
 	template = append(template, buttonMessage)
 	return template
