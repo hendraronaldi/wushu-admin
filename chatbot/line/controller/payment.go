@@ -7,16 +7,7 @@ import (
 
 func SaveProofOfPayment(dec []byte, filename string) (string, int) {
 	bucket := connections.FirebaseStorage()
-	// img := imgbase64.FromRemote("http://somedomain.com/animage.jpg")
-	// idx := strings.Index(img, ";base64,")
-	// dec, err := base64.StdEncoding.DecodeString(img[idx+8:])
-	// if err != nil {
-	// 	return 1
-	// }
 	res := bytes.NewReader(dec)
-	// if idx < 0 {
-	// 	return 1
-	// }
 
 	f, err := connections.PostFileFirebaseStorage(bucket, filename, res)
 	if err != nil {
