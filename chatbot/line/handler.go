@@ -128,7 +128,8 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 				}
 				// save image to firebase storage
 				t := time.Now().Format("2006-01-02 15:04:05")
-				if savedFile, isSavedProofOfPayment := controller.SaveProofOfPayment(img, t+" "+fmt.Sprint(user["Name"])+" "+fmt.Sprint(user["ID"])+".jpeg"); isSavedProofOfPayment != 0 {
+				filename := t + " " + fmt.Sprint(user["Name"]) + " " + fmt.Sprint(user["ID"]) + ".jpeg"
+				if savedFile, isSavedProofOfPayment := controller.SaveProofOfPayment(img, filename); isSavedProofOfPayment != 0 {
 					fmt.Println("Fail to send proof of payment error: ", err)
 					GetBotReply("payment", id, "registered")
 					botReply = append(botReply, messages.TextMessage("Fail to send proof of payment, please send it again"))
@@ -137,8 +138,8 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 					yes := make(map[string]string)
 					no := make(map[string]string)
 
-					yes["Yes"] = "yes\nproof of payment\n" + id + "\n" + savedFile
-					no["No"] = "no\nproof of payment\n" + id + "\n" + savedFile
+					yes["Yes"] = "yes\nproof of payment\n" + id + "\n" + savedFile + "\n" + filename
+					no["No"] = "no\nproof of payment\n" + id + "\n" + savedFile + "\n" + filename
 					confirmation = append(confirmation, yes, no)
 
 					textMessage := messages.TextMessage(fmt.Sprint(user["Name"]) + "'s proof of payment")
@@ -148,7 +149,7 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 					if err != nil {
 						// Delete saved image
 						fmt.Println("Fail to send proof of payment error: ", err)
-						errd := controller.DeleteProofOfPayment(savedFile)
+						errd := controller.DeleteProofOfPayment(filename)
 						if errd != nil {
 							fmt.Println("Fail to delete wrong proof of payment")
 						}
@@ -197,7 +198,7 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 				if confirmationDetails[1] == "registration" {
 					botPushMessage = append(botPushMessage, messages.TextMessage("Verification account failed"))
 				} else {
-					errd := controller.DeleteProofOfPayment(confirmationDetails[3])
+					errd := controller.DeleteProofOfPayment(confirmationDetails[4])
 					if errd != nil {
 						fmt.Println("Fail to delete wrong proof of payment")
 					}
