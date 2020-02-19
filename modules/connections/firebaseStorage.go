@@ -92,3 +92,11 @@ func PostFileFirebaseStorage(bucket *storage.BucketHandle, filename string, file
 
 	return objAttrs.MediaLink, nil
 }
+
+func DeleteFileFirebaseStorage(bucket *storage.BucketHandle, filename string) error {
+	err := bucket.Object(filename).Delete(context.Background())
+	if err != nil {
+		return err
+	}
+	return nil
+}
