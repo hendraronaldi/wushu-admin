@@ -196,13 +196,17 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 					// if isSavedProofOfPayment := controller.SaveProofOfPayment(confirmationDetails[3], t+" "+fmt.Sprint(user["Name"])+" "+fmt.Sprint(user["ID"])); isSavedProofOfPayment != 0 {
 					// 	botPushMessage = append(botPushMessage, messages.TextMessage("Your proof of payment has been rejected"))
 					// } else {
-					// 	botPushMessage = append(botPushMessage, messages.TextMessage("Your proof of payment has been verified"))
+					botPushMessage = append(botPushMessage, messages.TextMessage("Your proof of payment has been verified"))
 					// }
 				}
 			} else {
 				if confirmationDetails[1] == "registration" {
 					botPushMessage = append(botPushMessage, messages.TextMessage("Verification account failed"))
 				} else {
+					errd := controller.DeleteProofOfPayment(confirmationDetails[3])
+					if errd != nil {
+						fmt.Println("Fail to delete wrong proof of payment")
+					}
 					botPushMessage = append(botPushMessage, messages.TextMessage("Your proof of payment has been rejected"))
 				}
 			}
