@@ -31,9 +31,7 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 			switch message := m.(type) {
 			case *linebot.TextMessage:
 				riveReply = GetBotReply(message.Text, id, "new")
-				fmt.Println("line 32", riveReply)
 				if strings.ToLower(message.Text) == riveReply {
-					fmt.Println("registration process")
 					var confirmation []map[string]string
 					yes := make(map[string]string)
 					no := make(map[string]string)
@@ -56,7 +54,6 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 					if err != nil {
 						botReply = append(botReply, messages.TextMessage("Fail to send user registration"))
 					} else {
-						fmt.Println("sending registration confirmation")
 						var confirmation []map[string]string
 						yes := make(map[string]string)
 						no := make(map[string]string)
@@ -75,7 +72,6 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 						}
 					}
 				} else {
-					fmt.Println("new user welcome")
 					botReply = append(botReply, messages.TextMessage(riveReply))
 					if riveReply == "hello, welcome to Teratai Putih" {
 						botReply = append(botReply, menu...)
@@ -83,7 +79,6 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 				}
 			default:
 				riveReply = GetBotReply("home", id, "new")
-				fmt.Println("line 52", riveReply)
 				botReply = append(botReply, messages.TextMessage(riveReply))
 				botReply = append(botReply, menu...)
 			}
@@ -104,7 +99,6 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 				botReply = append(botReply, menu...)
 			} else {
 				riveReply = GetBotReply(message.Text, id, "registered")
-				fmt.Println("line 73", riveReply)
 				botReply = append(botReply, messages.TextMessage(riveReply))
 				if riveReply == "hello, welcome to Teratai Putih" {
 					botReply = append(botReply, menu...)
@@ -113,24 +107,21 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 
 		case *linebot.ImageMessage:
 			riveReply = GetBotReply("yes proof of payment", id, "registered")
-			fmt.Println("line 81", riveReply)
 			if riveReply == "proof of payment" {
 				content, errc := app.bot.GetMessageContent(message.ID).Do()
 				if errc != nil {
 					fmt.Println("retrieve image error:", errc)
 				}
 				defer content.Content.Close()
-				fmt.Println("content:", content)
-				// handle image
+
 				img, erri := ioutil.ReadAll(content.Content)
 				if erri != nil {
 					fmt.Println("retrieve image using ioutil error:", erri)
 				}
-				// save image to firebase storage
+
 				t := time.Now().Format("2006-01-02 15:04:05")
 				filename := t + " " + fmt.Sprint(user["Name"]) + " " + fmt.Sprint(user["ID"]) + ".jpg"
 				if savedFile, isSavedProofOfPayment := controller.SaveProofOfPayment(img, filename); isSavedProofOfPayment != 0 {
-					fmt.Println("Fail to send proof of payment error: ", err)
 					GetBotReply("payment", id, "registered")
 					botReply = append(botReply, messages.TextMessage("Fail to send proof of payment, please send it again"))
 				} else {
@@ -147,7 +138,7 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 					botPushMessage = append(botPushMessage, textMessage, imgMessage, messages.ConfirmCustomMessage("Are you sure?", confirmation))
 					err := PushHandler(adminID, botPushMessage)
 					if err != nil {
-						// Delete saved image
+
 						fmt.Println("Fail to send proof of payment error: ", err)
 						errd := controller.DeleteProofOfPayment(filename)
 						if errd != nil {
