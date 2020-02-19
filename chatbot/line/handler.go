@@ -128,7 +128,7 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 				}
 				// save image to firebase storage
 				t := time.Now().Format("2006-01-02 15:04:05")
-				if savedFile, isSavedProofOfPayment := controller.SaveProofOfPayment(img, t+" "+fmt.Sprint(user["Name"])+" "+fmt.Sprint(user["ID"])); isSavedProofOfPayment != 0 {
+				if savedFile, isSavedProofOfPayment := controller.SaveProofOfPayment(img, t+" "+fmt.Sprint(user["Name"])+" "+fmt.Sprint(user["ID"])+".jpeg"); isSavedProofOfPayment != 0 {
 					fmt.Println("Fail to send proof of payment error: ", err)
 					GetBotReply("payment", id, "registered")
 					botReply = append(botReply, messages.TextMessage("Fail to send proof of payment, please send it again"))
@@ -191,13 +191,7 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 						}
 					}
 				} else {
-					// save image to firebase storage
-					// t := time.Now().Format("2006-01-02 15:04:05")
-					// if isSavedProofOfPayment := controller.SaveProofOfPayment(confirmationDetails[3], t+" "+fmt.Sprint(user["Name"])+" "+fmt.Sprint(user["ID"])); isSavedProofOfPayment != 0 {
-					// 	botPushMessage = append(botPushMessage, messages.TextMessage("Your proof of payment has been rejected"))
-					// } else {
 					botPushMessage = append(botPushMessage, messages.TextMessage("Your proof of payment has been verified"))
-					// }
 				}
 			} else {
 				if confirmationDetails[1] == "registration" {
