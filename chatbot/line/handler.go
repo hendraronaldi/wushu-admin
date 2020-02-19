@@ -128,7 +128,7 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 				}
 				// save image to firebase storage
 				t := time.Now().Format("2006-01-02 15:04:05")
-				filename := t + " " + fmt.Sprint(user["Name"]) + " " + fmt.Sprint(user["ID"]) + ".jpeg"
+				filename := t + " " + fmt.Sprint(user["Name"]) + " " + fmt.Sprint(user["ID"]) + ".jpg"
 				if savedFile, isSavedProofOfPayment := controller.SaveProofOfPayment(img, filename); isSavedProofOfPayment != 0 {
 					fmt.Println("Fail to send proof of payment error: ", err)
 					GetBotReply("payment", id, "registered")
