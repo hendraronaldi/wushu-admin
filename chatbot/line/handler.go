@@ -2,6 +2,7 @@ package line
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strings"
 	"time"
@@ -114,30 +115,49 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 			riveReply = GetBotReply("yes proof of payment", id, "registered")
 			fmt.Println("line 81", riveReply)
 			if riveReply == "proof of payment" {
-				var confirmation []map[string]string
-				yes := make(map[string]string)
-				no := make(map[string]string)
-
 				content, errc := app.bot.GetMessageContent(message.ID).Do()
 				if errc != nil {
 					fmt.Println("retrieve image error:", errc)
 				}
 				defer content.Content.Close()
 				fmt.Println("content:", content)
-
-				yes["Yes"] = "yes\nproof of payment\n" + id + "\n" + message.OriginalContentURL
-				no["No"] = "no\nproof of payment\n" + id + "\n" + message.OriginalContentURL
-				confirmation = append(confirmation, yes, no)
-
-				textMessage := messages.TextMessage(fmt.Sprint(user["Name"]) + "'s proof of payment")
-				botPushMessage = append(botPushMessage, textMessage, message, messages.ConfirmCustomMessage("Are you sure?", confirmation))
-				err := PushHandler(adminID, botPushMessage)
-				if err != nil {
+				// handle image
+				img, erri := ioutil.ReadAll(content.Content)
+				if erri != nil {
+					fmt.Println("retrieve image using ioutil error:", erri)
+				}
+				// save image to firebase storage
+				t := time.Now().Format("2006-01-02 15:04:05")
+				if savedFile, isSavedProofOfPayment := controller.SaveProofOfPayment(img, t+" "+fmt.Sprint(user["Name"])+" "+fmt.Sprint(user["ID"])); isSavedProofOfPayment != 0 {
 					fmt.Println("Fail to send proof of payment error: ", err)
 					GetBotReply("payment", id, "registered")
 					botReply = append(botReply, messages.TextMessage("Fail to send proof of payment, please send it again"))
 				} else {
-					botReply = append(botReply, messages.TextMessage("Your proof of payment has been sent, please wait for the confirmation"))
+					var confirmation []map[string]string
+					yes := make(map[string]string)
+					no := make(map[string]string)
+
+					yes["Yes"] = "yes\nproof of payment\n" + id + "\n" + savedFile
+					no["No"] = "no\nproof of payment\n" + id + "\n" + savedFile
+					confirmation = append(confirmation, yes, no)
+
+					textMessage := messages.TextMessage(fmt.Sprint(user["Name"]) + "'s proof of payment")
+					imgMessage := messages.ImageMessage(savedFile)
+					botPushMessage = append(botPushMessage, textMessage, imgMessage, messages.ConfirmCustomMessage("Are you sure?", confirmation))
+					err := PushHandler(adminID, botPushMessage)
+					if err != nil {
+						// Delete saved image
+						fmt.Println("Fail to send proof of payment error: ", err)
+						errd := controller.DeleteProofOfPayment(savedFile)
+						if errd != nil {
+							fmt.Println("Fail to delete wrong proof of payment")
+						}
+						GetBotReply("payment", id, "registered")
+						botReply = append(botReply, messages.TextMessage("Fail to send proof of payment, please send it again"))
+					} else {
+						botReply = append(botReply, messages.TextMessage("Your proof of payment has been sent, please wait for the confirmation"))
+					}
+					botPushMessage = append(botPushMessage, messages.TextMessage("Your proof of payment has been verified"))
 				}
 			} else {
 				botReply = append(botReply, messages.TextMessage(riveReply))
@@ -172,12 +192,12 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 					}
 				} else {
 					// save image to firebase storage
-					t := time.Now().Format("2006-01-02 15:04:05")
-					if isSavedProofOfPayment := controller.SaveProofOfPayment(confirmationDetails[3], t+" "+fmt.Sprint(user["Name"])+" "+fmt.Sprint(user["ID"])); isSavedProofOfPayment != 0 {
-						botPushMessage = append(botPushMessage, messages.TextMessage("Your proof of payment has been rejected"))
-					} else {
-						botPushMessage = append(botPushMessage, messages.TextMessage("Your proof of payment has been verified"))
-					}
+					// t := time.Now().Format("2006-01-02 15:04:05")
+					// if isSavedProofOfPayment := controller.SaveProofOfPayment(confirmationDetails[3], t+" "+fmt.Sprint(user["Name"])+" "+fmt.Sprint(user["ID"])); isSavedProofOfPayment != 0 {
+					// 	botPushMessage = append(botPushMessage, messages.TextMessage("Your proof of payment has been rejected"))
+					// } else {
+					// 	botPushMessage = append(botPushMessage, messages.TextMessage("Your proof of payment has been verified"))
+					// }
 				}
 			} else {
 				if confirmationDetails[1] == "registration" {

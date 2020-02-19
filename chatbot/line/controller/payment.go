@@ -2,28 +2,34 @@ package controller
 
 import (
 	"bytes"
-	"encoding/base64"
-	"strings"
 	"work/wushu-backend/modules/connections"
-
-	"github.com/polds/imgbase64"
 )
 
-func SaveProofOfPayment(url, filename string) int {
+func SaveProofOfPayment(dec []byte, filename string) (string, int) {
 	bucket := connections.FirebaseStorage()
-	img := imgbase64.FromRemote("http://somedomain.com/animage.jpg")
-	idx := strings.Index(img, ";base64,")
-	dec, err := base64.StdEncoding.DecodeString(img[idx+8:])
-	if err != nil {
-		return 1
-	}
+	// img := imgbase64.FromRemote("http://somedomain.com/animage.jpg")
+	// idx := strings.Index(img, ";base64,")
+	// dec, err := base64.StdEncoding.DecodeString(img[idx+8:])
+	// if err != nil {
+	// 	return 1
+	// }
 	res := bytes.NewReader(dec)
-	if idx < 0 {
-		return 1
-	}
+	// if idx < 0 {
+	// 	return 1
+	// }
 
-	if _, err := connections.PostFileFirebaseStorage(bucket, filename, res); err != nil {
-		return 1
+	f, err := connections.PostFileFirebaseStorage(bucket, filename, res)
+	if err != nil {
+		return "", 1
 	}
-	return 0
+	return f, 0
+}
+
+func DeleteProofOfPayment(filename string) error {
+	bucket := connections.FirebaseStorage()
+	err := connections.DeleteFileFirebaseStorage(bucket, filename)
+	if err != nil {
+		return err
+	}
+	return nil
 }
