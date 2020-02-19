@@ -120,7 +120,7 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 				}
 
 				t := time.Now().Format("2006-01-02 15:04:05")
-				filename := fmt.Sprint(user["Name"]) + " " + fmt.Sprint(user["ID"]) + "/" + t + ".jpg"
+				filename := "proof of payment/" + fmt.Sprint(user["Name"]) + " " + fmt.Sprint(user["ID"]) + "/" + t + ".jpg"
 				if savedFile, isSavedProofOfPayment := controller.SaveProofOfPayment(img, filename); isSavedProofOfPayment != 0 {
 					GetBotReply("payment", id, "registered")
 					botReply = append(botReply, messages.TextMessage("Fail to send proof of payment, please send it again"))
