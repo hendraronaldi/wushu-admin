@@ -138,8 +138,8 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 					yes := make(map[string]string)
 					no := make(map[string]string)
 
-					yes["Yes"] = "yes\nproof of payment\n" + id + "\n" + savedFile + "\n" + filename
-					no["No"] = "no\nproof of payment\n" + id + "\n" + savedFile + "\n" + filename
+					yes["Yes"] = "yes\nproof of payment\n" + id + "\n" + filename
+					no["No"] = "no\nproof of payment\n" + id + "\n" + filename
 					confirmation = append(confirmation, yes, no)
 
 					textMessage := messages.TextMessage(fmt.Sprint(user["Name"]) + "'s proof of payment")
@@ -198,7 +198,7 @@ func ReplyHandler(app *LineTP, id string, m linebot.Message) []linebot.Message {
 				if confirmationDetails[1] == "registration" {
 					botPushMessage = append(botPushMessage, messages.TextMessage("Verification account failed"))
 				} else {
-					errd := controller.DeleteProofOfPayment(confirmationDetails[4])
+					errd := controller.DeleteProofOfPayment(confirmationDetails[3])
 					if errd != nil {
 						fmt.Println("Fail to delete wrong proof of payment")
 					}
